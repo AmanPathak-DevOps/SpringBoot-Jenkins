@@ -2,21 +2,10 @@ pipeline {
   agent any
   stages {
     stage('Build') {
-      parallel {
-        stage('Build') {
-          steps {
-            sh '''ls
+      steps {
+        sh '''ls
 echo "File listed above"
 pwd'''
-          }
-        }
-
-        stage('') {
-          steps {
-            sh 'sudo apt install git'
-          }
-        }
-
       }
     }
 
