@@ -7,7 +7,7 @@ pipeline{
         stage("Test"){
             steps{
                 sh 'mvn test'
-                echo "========executing A========"
+                slackSend channel: 'jenkins-notify', message: 'Job Started'
             }
             // post{
             //     always{
@@ -24,11 +24,13 @@ pipeline{
         stage("Build"){
             steps{
                 sh 'mvn package'
+                slackSend channel: 'jenkins-notify', message: 'Build Started'
             }
         }
         stage("Deploy-On-Test"){
             steps{
                 deploy adapters: [tomcat9(credentialsId: 'tomcat9details', path: '', url: 'http://18.207.190.140:8080/')], contextPath: '/app', war: '**/*.war'
+                slackSend channel: 'jenkins-notify', message: 'Deployment on Test Started'
             }
         }
         stage("Deploy-On-Prod"){
@@ -38,6 +40,7 @@ pipeline{
             }
             steps{
                 deploy adapters: [tomcat9(credentialsId: 'tomcat9details', path: '', url: 'http://54.227.217.199:8080/')], contextPath: '/app', war: '**/*.war'
+                slackSend channel: 'jenkins-notify', message: 'Deployment on Production Started'
             }
         }
     }
